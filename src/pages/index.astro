@@ -1,16 +1,74 @@
 ---
 
 ---
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirigiendo... | ZenForge Studio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Lexend', sans-serif;
+      }
+    </style>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+    <script>
+      const theme = localStorage.getItem('starlight-theme');
+      if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+    
+    <script>
+      const lang = localStorage.getItem('starlight-lang');
+      const targetPath = lang ? `/${lang}/` : '/es/';
+
+      if (window.location.pathname !== targetPath) {
+        window.location.pathname = targetPath;
+      }
+    </script>
+    
+    <meta http-equiv="refresh" content="1;url=/es/" />
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
+
+    <main class="flex h-screen w-full items-center justify-center p-4">
+        <div class="flex flex-col items-center gap-8 text-center">
+
+            <div class="flex flex-col items-center gap-4">
+                <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-sky-500/10 dark:bg-sky-400/10">
+                    <svg class="h-10 w-10 text-sky-500 dark:text-sky-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">ZenForge Studio</h1>
+            </div>
+
+            <div class="flex flex-col items-center gap-4">
+                <svg class="h-8 w-8 animate-spin text-sky-500 dark:text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="text-lg font-medium text-slate-700 dark:text-slate-300">
+                    Cargando tu experiencia...
+                </p>
+            </div>
+
+            <p class="text-sm text-slate-500 dark:text-slate-400">
+                Si no eres redirigido, <a href="/es/" class="font-semibold text-sky-500 hover:underline dark:text-sky-400">haz clic aquí</a>.
+            </p>
+
+        </div>
+    </main>
+
+    <style>
+          @import "tailwindcss";
+    </style>
+
+</body>
 </html>

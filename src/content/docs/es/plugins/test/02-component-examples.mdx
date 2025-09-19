@@ -1,0 +1,196 @@
+---
+title: "Galería de Componentes" 
+description: "Una demostración de todos los componentes personalizados y nativos disponibles en la wiki de ZenForge."
+---
+import { Aside, CardGrid, LinkCard, Icon, Code } from '@astrojs/starlight/components';
+import Card from '~/components/Card.astro';
+import Callout from '~/components/Callout.astro';
+import Tabs from '~/components/Tabs.astro';
+import TabPanel from '~/components/TabPanel.astro';
+import Accordion from '~/components/Accordion.astro';
+import Steps from '~/components/Steps.astro';
+import Step from '~/components/Step.astro';
+import FileTree from '~/components/FileTree.astro';
+import File from '~/components/File.astro';
+import FieldGroup from '~/components/FieldGroup.astro';
+import Field from '~/components/Field.astro';
+
+
+## Asides (Notas y Advertencias)
+Usa el componente Aside para resaltar información. Tiene varios tipos:
+
+<Aside type="note" title="Nota">
+Este es un Aside de tipo nota. Es perfecto para información neutral o aclaraciones importantes que el usuario no debe pasar por alto.
+</Aside>
+
+<Aside type="tip" title="Consejo Profesional">
+Usa el Aside de tipo tip para dar consejos, trucos o buenas prácticas que ayuden a los usuarios a sacar el máximo provecho de tus herramientas.
+</Aside>
+
+<Aside type="caution" title="Precaución">
+El tipo caution es ideal para advertir sobre acciones que pueden tener consecuencias inesperadas si no se realizan con cuidado.
+</Aside>
+
+<Aside type="danger" title="Peligro">
+El Aside de tipo danger se reserva para acciones destructivas o peligrosas, como borrar datos o configuraciones críticas.
+</Aside>
+
+
+## Galerías de Enlaces
+Combina CardGrid y LinkCard para crear secciones de navegación visuales.
+
+<CardGrid>
+<LinkCard title="Guía de Instalación" href="#" />
+<LinkCard title="Referencia de Comandos" href="#" />
+<LinkCard title="Lista de Permisos" href="#" />
+<LinkCard title="API para Desarrolladores" href="#" />
+</CardGrid>
+
+## Cards
+
+<Card title="REQUISITO DEL SISTEMA" icon="info">
+Este plugin requiere la versión 1.18 o superior de Spigot/Paper.
+</Card>
+
+<Card title="EFECTO DE PARTÍCULAS" icon="fire">
+Este encantamiento genera un efecto visual de llamas al golpear.
+</Card>
+
+## Callouts
+Similares a los Aside, pero con nuestro propio estilo.
+
+<Callout type="warning" title="Zona Experimental">
+Las funciones descritas en esta sección están en beta. Úsalas con precaución.
+</Callout>
+
+## Guía de Pasos (Steps)
+Perfecto para tutoriales y guías paso a paso.
+
+<Steps>
+<Step title="Descargar el archivo .jar">
+Obtén la última versión desde nuestra página de GitHub.
+</Step>
+<Step title="Instalar Dependencias">
+Asegúrate de tener ProtocolLib instalado en tu servidor.
+<Callout type="info">
+Puedes descargar ProtocolLib desde SpigotMC.
+</Callout>
+</Step>
+<Step title="Reiniciar el Servidor">
+Un reinicio completo es necesario para que el plugin se cargue correctamente.
+</Step>
+</Steps>
+
+
+## Acordeón (Accordion)
+Ideal para secciones de "Preguntas Frecuentes" o para ocultar contenido extenso.
+
+<Accordion summary="¿Este plugin afecta el rendimiento (TPS)?">
+No. El plugin está altamente optimizado para ejecutarse de forma asíncrona y no hemos detectado impacto en los TPS del servidor en nuestras pruebas.
+</Accordion>
+
+## Árbol de Archivos (File Tree)
+Muestra la estructura de carpetas de tu plugin.
+
+<FileTree>
+  <File name="src" type="folder">
+    <File name="components" type="folder">
+      <File name="Header.astro" type="file" />
+      <File name="Footer.astro" type="file" />
+      <File name="Navigation.astro" type="file" />
+    </File>
+    <File name="pages" type="folder">
+      <File name="index.astro" type="file" />
+      <File name="about.astro" type="file" />
+      <File name="blog" type="folder">
+        <File name="[slug].astro" type="file" />
+        <File name="index.astro" type="file" />
+      </File>
+    </File>
+    <File name="styles" type="folder">
+      <File name="global.css" type="file" />
+      <File name="components.css" type="file" />
+    </File>
+  </File>
+  <File name="public" type="folder">
+    <File name="favicon.ico" type="file" />
+    <File name="images" type="folder">
+      <File name="hero.jpg" type="file" />
+      <File name="logo.svg" type="file" />
+    </File>
+  </File>
+  <File name="package.json" type="file" highlighted />
+  <File name="astro.config.mjs" type="file" />
+  <File name="tsconfig.json" type="file" />
+</FileTree>
+
+
+## Grupo de Campos (Field Group)
+La mejor manera de documentar configuraciones, permisos o placeholders .variantes: default, compact, cards, table
+
+<FieldGroup>
+  <Field 
+    name="title" 
+    type="string" 
+    required 
+    description="The main title of the page"
+    examples={['<code>"My Amazing Blog"</code>', '<code>"Welcome to My Site"</code>']}
+  />
+  <Field 
+    name="description" 
+    type="string" 
+    description="Optional description for SEO"
+    defaultValue='"Default description"'
+  />
+</FieldGroup>
+
+<FieldGroup 
+  title="Configuration Options" 
+  description="These settings control the behavior of the component"
+>
+  <Field 
+    name="theme" 
+    type="'light' | 'dark' | 'auto'" 
+    defaultValue="'auto'"
+    description="Theme preference for the component"
+  />
+</FieldGroup>
+
+
+<FieldGroup variant="cards" title="API Endpoints">
+  <Field 
+    name="baseURL" 
+    type="string" 
+    required
+    examples={['<code>"https://api.example.com"</code>']}
+    tags={["endpoint", "required"]}
+  />
+  <Field 
+    name="timeout" 
+    type="number" 
+    defaultValue="5000"
+    description="Request timeout in milliseconds"
+    since="v2.1.0"
+  />
+</FieldGroup>
+
+<FieldGroup 
+  title="Advanced Options" 
+  collapsible 
+  defaultExpanded={false}
+  variant="compact"
+>
+  <Field 
+    name="debug" 
+    type="boolean" 
+    defaultValue="false"
+    description="Enable debug mode"
+  />
+</FieldGroup>
+
+<Field 
+  name="oldProp" 
+  type="string" 
+  deprecated
+  description="This property is deprecated. Use <code>newProp</code> instead."
+/>

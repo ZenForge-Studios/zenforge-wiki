@@ -1,0 +1,454 @@
+---
+interface Props {
+  tabs: string[];
+  variant?: "default" | "pills" | "underline" | "cards";
+  size?: "sm" | "md" | "lg";
+  defaultTab?: number;
+  fullWidth?: boolean;
+  animated?: boolean;
+}
+
+const { 
+  tabs, 
+  variant = "default", 
+  size = "md", 
+  defaultTab = 0,
+  fullWidth = false,
+  animated = true
+} = Astro.props;
+
+const tabsId = `zen-tabs-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div 
+  class:list={["zen-tabs", variant, size, { "full-width": fullWidth, animated }]} 
+  data-tabs-id={tabsId}
+  data-default-tab={defaultTab}
+>
+  <div class="zen-tab-list" role="tablist" aria-label="Tab navigation">
+    {tabs.map((tab, index) => (
+      <button
+        role="tab"
+        class:list={["zen-tab-button", { "is-active": index === defaultTab }]}
+        data-tab={index}
+        aria-selected={index === defaultTab ? "true" : "false"}
+        aria-controls={`${tabsId}-panel-${index}`}
+        id={`${tabsId}-tab-${index}`}
+        tabindex={index === defaultTab ? 0 : -1}
+      >
+        <span class="zen-tab-text">{tab}</span>
+        <span class="zen-tab-indicator" aria-hidden="true"></span>
+      </button>
+    ))}
+    <div class="zen-tab-slider" aria-hidden="true"></div>
+  </div>
+  
+  <div class="zen-tab-panels">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .zen-tabs {
+    --tab-radius: var(--zen-radius, 0.75rem);
+    --tab-padding-y: var(--zen-space-sm, 0.75rem);
+    --tab-padding-x: var(--zen-space-lg, 1.5rem);
+    --tab-gap: var(--zen-space-xs, 0.5rem);
+    --tab-border-width: 1px;
+    --tab-transition: all 0.3s var(--zen-ease, cubic-bezier(0.4, 0, 0.2, 1));
+    --tab-font-weight: 500;
+    --tab-font-size: 0.875rem;
+    
+    position: relative;
+    margin: var(--zen-space-xl, 2rem) 0;
+    background: var(--zen-bg-content, #ffffff);
+    border: var(--tab-border-width) solid var(--zen-border, #e5e7eb);
+    border-radius: var(--tab-radius);
+    overflow: hidden;
+    box-shadow: var(--zen-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
+  }
+  
+  .zen-tab-list {
+    position: relative;
+    display: flex;
+    background: var(--zen-bg-elevated, #f8fafc);
+    border-bottom: var(--tab-border-width) solid var(--zen-border, #e5e7eb);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .zen-tab-list::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .zen-tab-button {
+    position: relative;
+    flex: 0 0 auto;
+    padding: var(--tab-padding-y) var(--tab-padding-x);
+    border: none;
+    background: transparent;
+    color: var(--zen-text-muted, #64748b);
+    font-size: var(--tab-font-size);
+    font-weight: var(--tab-font-weight);
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--tab-transition);
+    white-space: nowrap;
+    user-select: none;
+    z-index: 2;
+  }
+  
+  .zen-tab-button:hover {
+    color: var(--zen-text-headings, #0f172a);
+    background: rgba(14, 165, 233, 0.05);
+  }
+  
+  .zen-tab-button:focus-visible {
+    outline: 2px solid var(--zen-primary-500, #0ea5e9);
+    outline-offset: -2px;
+  }
+  
+  .zen-tab-button.is-active {
+    color: var(--zen-primary-600, #0284c7);
+    font-weight: 600;
+  }
+  
+  .zen-tab-text {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .zen-tab-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--zen-primary-500, #0ea5e9);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s var(--zen-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+  
+  .zen-tab-button.is-active .zen-tab-indicator {
+    transform: scaleX(1);
+  }
+  
+  .zen-tab-slider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--zen-gradient-primary, linear-gradient(135deg, #0ea5e9, #38bdf8));
+    transition: var(--tab-transition);
+    z-index: 1;
+    opacity: 0;
+  }
+  
+  .zen-tabs.animated .zen-tab-slider {
+    opacity: 1;
+  }
+  
+  .zen-tab-panels {
+    position: relative;
+    min-height: 200px;
+  }
+  
+  /* Full width variant */
+  .zen-tabs.full-width .zen-tab-button {
+    flex: 1 1 0%;
+    text-align: center;
+  }
+  
+  /* Size variants */
+  .zen-tabs.sm {
+    --tab-padding-y: var(--zen-space-xs, 0.5rem);
+    --tab-padding-x: var(--zen-space, 1rem);
+    --tab-font-size: 0.8125rem;
+  }
+  
+  .zen-tabs.lg {
+    --tab-padding-y: var(--zen-space, 1rem);
+    --tab-padding-x: var(--zen-space-xl, 2rem);
+    --tab-font-size: 1rem;
+  }
+  
+  /* Pills variant */
+  .zen-tabs.pills .zen-tab-list {
+    background: transparent;
+    border-bottom: none;
+    padding: var(--zen-space-sm, 0.75rem);
+    gap: var(--tab-gap);
+  }
+  
+  .zen-tabs.pills .zen-tab-button {
+    border-radius: calc(var(--tab-radius) - 0.25rem);
+    background: var(--zen-bg-elevated, #f8fafc);
+    border: var(--tab-border-width) solid var(--zen-border-light, #f1f5f9);
+  }
+  
+  .zen-tabs.pills .zen-tab-button.is-active {
+    background: var(--zen-primary-500, #0ea5e9);
+    color: white;
+    border-color: var(--zen-primary-500, #0ea5e9);
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.2);
+  }
+  
+  .zen-tabs.pills .zen-tab-indicator {
+    display: none;
+  }
+  
+  .zen-tabs.pills .zen-tab-slider {
+    display: none;
+  }
+  
+  /* Underline variant */
+  .zen-tabs.underline {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
+  
+  .zen-tabs.underline .zen-tab-list {
+    background: transparent;
+    border-bottom: var(--tab-border-width) solid var(--zen-border, #e5e7eb);
+  }
+  
+  .zen-tabs.underline .zen-tab-button {
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  
+  .zen-tabs.underline .zen-tab-button.is-active {
+    border-bottom-color: var(--zen-primary-500, #0ea5e9);
+  }
+  
+  /* Cards variant */
+  .zen-tabs.cards .zen-tab-list {
+    background: transparent;
+    border-bottom: none;
+    padding: var(--zen-space-sm, 0.75rem) var(--zen-space-sm, 0.75rem) 0;
+    gap: var(--tab-gap);
+  }
+  
+  .zen-tabs.cards .zen-tab-button {
+    background: var(--zen-bg-elevated, #f8fafc);
+    border: var(--tab-border-width) solid var(--zen-border, #e5e7eb);
+    border-bottom: none;
+    border-radius: var(--tab-radius) var(--tab-radius) 0 0;
+    margin-bottom: 0;
+  }
+  
+  .zen-tabs.cards .zen-tab-button.is-active {
+    background: var(--zen-bg-content, #ffffff);
+    border-bottom: var(--tab-border-width) solid var(--zen-bg-content, #ffffff);
+    margin-bottom: -1px;
+  }
+  
+  .zen-tabs.cards .zen-tab-panels {
+    border: var(--tab-border-width) solid var(--zen-border, #e5e7eb);
+    border-top: none;
+    border-radius: 0 0 var(--tab-radius) var(--tab-radius);
+  }
+  
+  /* Dark theme */
+  html[data-theme='dark'] .zen-tabs {
+    --zen-bg-content: var(--zen-bg-content, #1f2937);
+    --zen-bg-elevated: var(--zen-bg-elevated, #374151);
+    --zen-border: var(--zen-border, #4b5563);
+    --zen-border-light: var(--zen-border-light, #374151);
+    --zen-text-muted: var(--zen-text-muted, #d1d5db);
+    --zen-text-headings: var(--zen-text-headings, #ffffff);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .zen-tabs {
+      margin: var(--zen-space-lg, 1.5rem) 0;
+    }
+    
+    .zen-tab-button {
+      --tab-padding-x: var(--zen-space, 1rem);
+      --tab-font-size: 0.8125rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .zen-tab-button {
+      --tab-padding-x: var(--zen-space-sm, 0.75rem);
+    }
+  }
+</style>
+
+<script>
+  class ZenTabs {
+    private container: HTMLElement;
+    private tabButtons: NodeListOf<HTMLButtonElement>;
+    private tabPanels: NodeListOf<HTMLElement>;
+    private slider: HTMLElement | null;
+    private currentTab: number;
+    private animated: boolean;
+
+    constructor(container: HTMLElement) {
+      this.container = container;
+      this.tabButtons = container.querySelectorAll('.zen-tab-button');
+      this.tabPanels = container.querySelectorAll('.zen-tab-panel');
+      this.slider = container.querySelector('.zen-tab-slider');
+      this.currentTab = parseInt(container.dataset.defaultTab || '0');
+      this.animated = container.classList.contains('animated');
+
+      this.init();
+    }
+
+    private init(): void {
+      // Hide all panels except the default one
+      this.tabPanels.forEach((panel, index) => {
+        panel.hidden = index !== this.currentTab;
+        panel.setAttribute('aria-hidden', index !== this.currentTab ? 'true' : 'false');
+      });
+
+      // Set up event listeners
+      this.tabButtons.forEach((button, index) => {
+        button.addEventListener('click', () => this.switchTab(index));
+        button.addEventListener('keydown', (e) => this.handleKeydown(e, index));
+      });
+
+      // Update slider position
+      if (this.slider && this.animated) {
+        this.updateSlider();
+      }
+
+      // Handle resize for slider positioning
+      window.addEventListener('resize', () => {
+        if (this.slider && this.animated) {
+          this.updateSlider();
+        }
+      });
+    }
+
+    private switchTab(index: number): void {
+      if (index === this.currentTab) return;
+
+      const previousTab = this.currentTab;
+      this.currentTab = index;
+
+      // Update buttons
+      this.tabButtons.forEach((button, i) => {
+        const isActive = i === index;
+        button.classList.toggle('is-active', isActive);
+        button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        button.tabIndex = isActive ? 0 : -1;
+      });
+
+      // Update panels with animation
+      if (this.animated) {
+        this.animateTabSwitch(previousTab, index);
+      } else {
+        this.tabPanels.forEach((panel, i) => {
+          panel.hidden = i !== index;
+          panel.setAttribute('aria-hidden', i !== index ? 'true' : 'false');
+        });
+      }
+
+      // Update slider
+      if (this.slider && this.animated) {
+        this.updateSlider();
+      }
+
+      // Focus management
+      this.tabButtons[index].focus();
+    }
+
+    private animateTabSwitch(from: number, to: number): void {
+      const fromPanel = this.tabPanels[from];
+      const toPanel = this.tabPanels[to];
+
+      if (!fromPanel || !toPanel) return;
+
+      // Fade out current panel
+      fromPanel.style.opacity = '0';
+      fromPanel.style.transform = 'translateY(-8px)';
+
+      setTimeout(() => {
+        fromPanel.hidden = true;
+        fromPanel.setAttribute('aria-hidden', 'true');
+        fromPanel.style.opacity = '';
+        fromPanel.style.transform = '';
+
+        // Fade in new panel
+        toPanel.hidden = false;
+        toPanel.setAttribute('aria-hidden', 'false');
+        toPanel.style.opacity = '0';
+        toPanel.style.transform = 'translateY(8px)';
+
+        requestAnimationFrame(() => {
+          toPanel.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+          toPanel.style.opacity = '1';
+          toPanel.style.transform = 'translateY(0)';
+
+          setTimeout(() => {
+            toPanel.style.transition = '';
+          }, 300);
+        });
+      }, 150);
+    }
+
+    private updateSlider(): void {
+      if (!this.slider) return;
+
+      const activeButton = this.tabButtons[this.currentTab];
+      if (!activeButton) return;
+
+      const rect = activeButton.getBoundingClientRect();
+      const listRect = activeButton.parentElement!.getBoundingClientRect();
+
+      this.slider.style.width = `${rect.width}px`;
+      this.slider.style.left = `${rect.left - listRect.left}px`;
+    }
+
+    private handleKeydown(e: KeyboardEvent, currentIndex: number): void {
+      let newIndex = currentIndex;
+
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          e.preventDefault();
+          newIndex = (currentIndex + 1) % this.tabButtons.length;
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          e.preventDefault();
+          newIndex = currentIndex === 0 ? this.tabButtons.length - 1 : currentIndex - 1;
+          break;
+        case 'Home':
+          e.preventDefault();
+          newIndex = 0;
+          break;
+        case 'End':
+          e.preventDefault();
+          newIndex = this.tabButtons.length - 1;
+          break;
+        default:
+          return;
+      }
+
+      this.switchTab(newIndex);
+    }
+  }
+
+  // Initialize tabs when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.zen-tabs').forEach((container) => {
+      new ZenTabs(container as HTMLElement);
+    });
+  });
+
+  // Reinitialize if content changes (for dynamic content)
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('.zen-tabs').forEach((container) => {
+      new ZenTabs(container as HTMLElement);
+    });
+  });
+</script>
+

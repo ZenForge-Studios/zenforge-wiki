@@ -1,0 +1,76 @@
+
+---
+interface Props {
+  title: string;
+  id?: string;
+}
+
+const { title, id } = Astro.props;
+const panelId = id || `panel-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div 
+  class="zen-tab-panel" 
+  data-title={title}
+  role="tabpanel"
+  id={panelId}
+  tabindex="0"
+>
+  <div class="zen-tab-content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .zen-tab-panel {
+    padding: var(--zen-space-xl, 2rem);
+    outline: none;
+  }
+  
+  .zen-tab-panel:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--zen-primary-500, #0ea5e9);
+  }
+  
+  .zen-tab-content > *:first-child {
+    margin-top: 0;
+  }
+  
+  .zen-tab-content > *:last-child {
+    margin-bottom: 0;
+  }
+  
+  .zen-tab-content h1,
+  .zen-tab-content h2,
+  .zen-tab-content h3,
+  .zen-tab-content h4,
+  .zen-tab-content h5,
+  .zen-tab-content h6 {
+    color: var(--zen-text-headings, #0f172a);
+  }
+  
+  .zen-tab-content p {
+    color: var(--zen-text-main, #334155);
+    line-height: 1.6;
+  }
+  
+  .zen-tab-content code {
+    background: var(--sl-color-accent-low, rgba(14, 165, 233, 0.1));
+    color: var(--zen-primary-600, #0284c7);
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--zen-radius-xs, 0.375rem);
+    font-size: 0.875em;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .zen-tab-panel {
+      padding: var(--zen-space-lg, 1.5rem);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .zen-tab-panel {
+      padding: var(--zen-space, 1rem);
+    }
+  }
+</style>

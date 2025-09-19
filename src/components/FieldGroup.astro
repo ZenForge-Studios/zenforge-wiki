@@ -1,0 +1,202 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  variant?: "default" | "compact" | "cards" | "table";
+  collapsible?: boolean;
+  defaultExpanded?: boolean;
+}
+
+const { 
+  title, 
+  description, 
+  variant = "default", 
+  collapsible = false, 
+  defaultExpanded = true 
+} = Astro.props;
+
+const groupId = `field-group-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div class:list={["zen-field-group", variant]} data-group-id={groupId}>
+  {(title || description) && (
+    <div class="zen-field-group-header">
+      {title && (
+        <h3 class="zen-field-group-title">
+          {title}
+        </h3>
+      )}
+      {description && (
+        <p class="zen-field-group-description">
+          {description}
+        </p>
+      )}
+    </div>
+  )}
+  
+  {collapsible ? (
+    <details class="zen-field-collapsible" open={defaultExpanded}>
+      <summary class="zen-field-toggle">
+        <span class="zen-toggle-icon">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+          </svg>
+        </span>
+        {title || "Fields"}
+      </summary>
+      <div class="zen-field-content">
+        <slot />
+      </div>
+    </details>
+  ) : (
+    <div class="zen-field-content">
+      <slot />
+    </div>
+  )}
+</div>
+
+<style>
+  .zen-field-group {
+    --field-gap: var(--zen-space-xl, 2rem);
+    --field-padding: var(--zen-space-xl, 2rem);
+    --field-border-color: var(--zen-border, #e5e7eb);
+    --field-border-radius: var(--zen-radius, 0.75rem);
+    --field-bg: var(--zen-bg-content, #ffffff);
+    --field-header-bg: var(--zen-bg-elevated, #f8fafc);
+    
+    position: relative;
+    background: var(--field-bg);
+    border: 1px solid var(--field-border-color);
+    border-radius: var(--field-border-radius);
+    margin: var(--field-gap) 0;
+    overflow: hidden;
+    box-shadow: var(--zen-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
+    transition: all 0.2s var(--zen-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+  
+  .zen-field-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--zen-gradient-primary, linear-gradient(135deg, #0ea5e9, #38bdf8));
+    border-radius: var(--field-border-radius) var(--field-border-radius) 0 0;
+  }
+  
+  .zen-field-group-header {
+    padding: var(--zen-space-lg, 1.5rem) var(--field-padding) var(--zen-space, 1rem);
+    background: var(--field-header-bg);
+    border-bottom: 1px solid var(--field-border-color);
+  }
+  
+  .zen-field-group-title {
+    margin: 0 0 var(--zen-space-sm, 0.75rem) 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--zen-text-headings, #0f172a);
+    line-height: 1.3;
+  }
+  
+  .zen-field-group-description {
+    margin: 0;
+    color: var(--zen-text-muted, #64748b);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  
+  .zen-field-collapsible {
+    border: none;
+  }
+  
+  .zen-field-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--zen-space-sm, 0.75rem);
+    padding: var(--zen-space-lg, 1.5rem) var(--field-padding);
+    background: var(--field-header-bg);
+    border-bottom: 1px solid var(--field-border-color);
+    cursor: pointer;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--zen-text-headings, #0f172a);
+    transition: all 0.2s var(--zen-ease, cubic-bezier(0.4, 0, 0.2, 1));
+    list-style: none;
+    user-select: none;
+  }
+  
+  .zen-field-toggle::-webkit-details-marker {
+    display: none;
+  }
+  
+  .zen-field-toggle:hover {
+    background: var(--sl-color-accent-low, rgba(14, 165, 233, 0.05));
+  }
+  
+  .zen-toggle-icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--zen-primary-500, #0ea5e9);
+    transition: transform 0.2s var(--zen-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+  
+  .zen-field-collapsible[open] .zen-toggle-icon {
+    transform: rotate(90deg);
+  }
+  
+  .zen-field-content {
+    padding: var(--field-padding);
+    display: flex;
+    flex-direction: column;
+    gap: var(--zen-space-xl, 2rem);
+  }
+  
+  /* Variants */
+  .zen-field-group.compact {
+    --field-gap: var(--zen-space-lg, 1.5rem);
+    --field-padding: var(--zen-space-lg, 1.5rem);
+  }
+  
+  .zen-field-group.compact .zen-field-content {
+    gap: var(--zen-space-lg, 1.5rem);
+  }
+  
+  .zen-field-group.cards .zen-field-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--zen-space-lg, 1.5rem);
+  }
+  
+  .zen-field-group.table .zen-field-content {
+    gap: 0;
+  }
+  
+  /* Dark theme */
+  html[data-theme='dark'] .zen-field-group {
+    --field-bg: var(--zen-bg-content, #1f2937);
+    --field-header-bg: var(--zen-bg-elevated, #374151);
+    --field-border-color: var(--zen-border, #4b5563);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .zen-field-group {
+      --field-padding: var(--zen-space-lg, 1.5rem);
+      margin: var(--zen-space-lg, 1.5rem) 0;
+    }
+    
+    .zen-field-group.cards .zen-field-content {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .zen-field-group {
+      --field-padding: var(--zen-space, 1rem);
+    }
+  }
+</style>
+
+

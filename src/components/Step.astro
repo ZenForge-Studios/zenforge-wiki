@@ -1,0 +1,265 @@
+---
+interface Props {
+  title?: string;
+  subtitle?: string;
+  status?: "default" | "active" | "completed" | "warning" | "error";
+  icon?: string;
+}
+
+const { title, subtitle, status = "default", icon } = Astro.props;
+
+const statusIcons = {
+  completed: `<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>`,
+  warning: `<path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>`,
+  error: `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/>`
+};
+---
+
+<div class:list={["zen-step", status]} data-status={status}>
+  <div class="zen-step-marker" aria-hidden="true">
+    {status === "completed" || status === "warning" || status === "error" ? (
+      <svg 
+        class="zen-step-icon" 
+        viewBox="0 0 20 20" 
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <Fragment set:html={statusIcons[status]} />
+      </svg>
+    ) : icon ? (
+      <Fragment set:html={icon} />
+    ) : (
+      <span class="zen-step-number" aria-label="Step number"></span>
+    )}
+  </div>
+  
+  <div class="zen-step-content">
+    <div class="zen-step-header">
+      {title && (
+        <h3 class="zen-step-title">
+          {title}
+        </h3>
+      )}
+      {subtitle && (
+        <p class="zen-step-subtitle">
+          {subtitle}
+        </p>
+      )}
+    </div>
+    
+    <div class="zen-step-body">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .zen-step {
+    --step-marker-size: var(--steps-counter-size, 2.5rem);
+    --step-marker-bg: var(--steps-counter-bg, #0ea5e9);
+    --step-marker-color: var(--steps-counter-color, #ffffff);
+    --step-content-color: var(--zen-text-main, #334155);
+    --step-title-color: var(--zen-text-headings, #0f172a);
+    --step-subtitle-color: var(--zen-text-muted, #64748b);
+    
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--zen-space-lg, 1.5rem);
+    margin-bottom: var(--steps-gap, 3rem);
+    transition: all 0.3s var(--zen-ease, cubic-bezier(0.4, 0, 0.2, 1));
+    counter-increment: zen-steps-counter;
+  }
+  
+  .zen-step:last-child {
+    margin-bottom: 0;
+  }
+  
+  .zen-step-marker {
+    position: relative;
+    flex-shrink: 0;
+    width: var(--step-marker-size);
+    height: var(--step-marker-size);
+    border-radius: 50%;
+    background: var(--step-marker-bg);
+    color: var(--step-marker-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.2);
+    transition: all 0.3s var(--zen-ease, cubic-bezier(0.4, 0, 0.2, 1));
+    z-index: 1;
+  }
+  
+  .zen-step-number::before {
+    content: counter(zen-steps-counter);
+  }
+  
+  .zen-steps[data-numbered="false"] .zen-step-number::before {
+    content: '';
+  }
+  
+  .zen-step-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .zen-step-content {
+    flex: 1;
+    min-width: 0;
+    padding-top: 0.25rem;
+  }
+  
+  .zen-step-header {
+    margin-bottom: var(--zen-space-sm, 0.75rem);
+  }
+  
+  .zen-step-title {
+    margin: 0 0 var(--zen-space-xs, 0.5rem) 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--step-title-color);
+    letter-spacing: -0.01em;
+  }
+  
+  .zen-step-subtitle {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--step-subtitle-color);
+    line-height: 1.5;
+  }
+  
+  .zen-step-body {
+    color: var(--step-content-color);
+    line-height: 1.6;
+  }
+  
+  .zen-step-body > *:first-child {
+    margin-top: 0;
+  }
+  
+  .zen-step-body > *:last-child {
+    margin-bottom: 0;
+  }
+  
+  .zen-step-body p {
+    margin-bottom: var(--zen-space-sm, 0.75rem);
+  }
+  
+  .zen-step-body p:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Status variants */
+  .zen-step.active {
+    --step-marker-bg: var(--zen-primary-600, #0284c7);
+    --step-title-color: var(--zen-primary-700, #0369a1);
+  }
+  
+  .zen-step.active .zen-step-marker {
+    animation: zen-pulse 2s infinite;
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+  }
+  
+  .zen-step.completed {
+    --step-marker-bg: var(--zen-success, #22c55e);
+    --step-title-color: var(--zen-success, #22c55e);
+  }
+  
+  .zen-step.warning {
+    --step-marker-bg: var(--zen-warning, #f59e0b);
+    --step-title-color: var(--zen-warning, #f59e0b);
+  }
+  
+  .zen-step.error {
+    --step-marker-bg: var(--zen-error, #ef4444);
+    --step-title-color: var(--zen-error, #ef4444);
+  }
+  
+  /* Hover effects */
+  .zen-step:hover .zen-step-marker {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.3);
+  }
+  
+  .zen-step.completed:hover .zen-step-marker {
+    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3);
+  }
+  
+  .zen-step.warning:hover .zen-step-marker {
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+  }
+  
+  .zen-step.error:hover .zen-step-marker {
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+  }
+  
+  /* Dark theme adjustments */
+  html[data-theme='dark'] .zen-step {
+    --step-content-color: var(--zen-text-main, #f3f4f6);
+    --step-title-color: var(--zen-text-headings, #ffffff);
+    --step-subtitle-color: var(--zen-text-muted, #d1d5db);
+  }
+  
+  html[data-theme='dark'] .zen-step-marker {
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
+  }
+  
+  /* Animations */
+  @keyframes zen-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .zen-step {
+      --step-marker-size: 2rem;
+      gap: var(--zen-space, 1rem);
+      margin-bottom: var(--zen-space-xl, 2rem);
+    }
+    
+    .zen-step-title {
+      font-size: 1.125rem;
+    }
+    
+    .zen-step-icon {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .zen-step {
+      --step-marker-size: 1.75rem;
+      gap: var(--zen-space-sm, 0.75rem);
+    }
+    
+    .zen-step-title {
+      font-size: 1rem;
+    }
+  }
+  
+  /* Reduce motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .zen-step,
+    .zen-step-marker {
+      transition: none;
+    }
+    
+    .zen-step.active .zen-step-marker {
+      animation: none;
+    }
+    
+    .zen-step:hover .zen-step-marker {
+      transform: none;
+    }
+  }
+</style>

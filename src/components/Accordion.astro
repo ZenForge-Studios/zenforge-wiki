@@ -1,0 +1,45 @@
+---
+interface Props {
+  summary: string;
+}
+const { summary } = Astro.props;
+---
+
+<details class="zen-accordion not-prose">
+  <summary>{summary}</summary>
+  <div class="accordion-content">
+    <slot />
+  </div>
+</details>
+
+<style>
+  .zen-accordion {
+    margin: 1.5rem 0;
+    border: 1px solid var(--sl-color-border);
+    border-radius: 0.5rem;
+    background-color: var(--sl-color-bg-accent);
+  }
+  .zen-accordion summary {
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 0.2s;
+  }
+  .zen-accordion summary:hover {
+    color: var(--sl-color-accent);
+  }
+  .zen-accordion summary::after {
+    font-size: 0.8em;
+    transition: transform 0.2s ease;
+  }
+  .zen-accordion[open] > summary::after {
+    transform: rotate(180deg);
+  }
+  .accordion-content {
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid var(--sl-color-border);
+  }
+</style>

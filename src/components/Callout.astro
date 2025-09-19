@@ -1,0 +1,273 @@
+---
+interface Props {
+  type?: "info" | "warning" | "danger" | "success" | "tip";
+  title?: string;
+  icon?: boolean;
+}
+
+const { type = "info", title, icon = true } = Astro.props;
+
+const icons = {
+  info: `<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd"/>`,
+  warning: `<path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>`,
+  danger: `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/>`,
+  success: `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.236 4.53L8.053 10.5a.75.75 0 00-1.06 1.061l2.03 2.03a.75.75 0 001.137-.089l3.697-5.191z" clip-rule="evenodd"/>`,
+  tip: `<path fill-rule="evenodd" d="M9.315 7.584C12.195 3.883 16.695 3.883 19.56 7.584a.75.75 0 101.06-1.06C17.982 2.827 12.018 2.827 9.38 6.524a6.185 6.185 0 00-1.751 3.836c-.07.97-.07 1.94 0 2.909a6.185 6.185 0 001.751 3.836c2.638 3.697 8.602 3.697 11.24 0a.75.75 0 10-1.06-1.061c-2.865 3.701-7.365 3.701-10.245 0A4.685 4.685 0 018.04 13.5c-.053-.734-.053-1.466 0-2.2a4.685 4.685 0 011.275-2.716z" clip-rule="evenodd"/>`
+};
+---
+
+<div class:list={["zen-callout", type]} data-type={type}>
+  {icon && (
+    <div class="zen-callout-icon" aria-hidden="true">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        class="zen-icon"
+      >
+        <Fragment set:html={icons[type]} />
+      </svg>
+    </div>
+  )}
+  
+  <div class="zen-callout-content">
+    {title && (
+      <h5 class="zen-callout-title">
+        {title}
+      </h5>
+    )}
+    <div class="zen-callout-body">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .zen-callout {
+    --callout-border-width: 3px;
+    --callout-border-radius: var(--zen-radius, 0.75rem);
+    --callout-padding: var(--zen-space-lg, 1.5rem);
+    --callout-gap: var(--zen-space, 1rem);
+    --callout-shadow: var(--zen-shadow-xs, 0 1px 3px rgba(0, 0, 0, 0.04));
+    
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--callout-gap);
+    padding: var(--callout-padding);
+    margin: var(--zen-space-xl, 2rem) 0;
+    border-left: var(--callout-border-width) solid var(--callout-border-color);
+    border-radius: var(--callout-border-radius);
+    background: var(--callout-bg);
+    backdrop-filter: blur(8px) saturate(120%);
+    box-shadow: var(--callout-shadow);
+    transition: all 0.2s var(--zen-ease, cubic-bezier(0.4, 0, 0.2, 1));
+    overflow: hidden;
+  }
+  
+  .zen-callout::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      var(--callout-border-color) 0%,
+      transparent 100%
+    );
+    opacity: 0.3;
+  }
+  
+  .zen-callout:hover {
+    transform: translateX(2px);
+    box-shadow: 0 4px 20px var(--callout-shadow-color);
+  }
+  
+  .zen-callout-icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.125rem;
+    color: var(--callout-icon-color);
+    transition: all 0.2s var(--zen-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+  
+  .zen-icon {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  }
+  
+  .zen-callout:hover .zen-callout-icon {
+    transform: scale(1.05);
+  }
+  
+  .zen-callout-content {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .zen-callout-title {
+    margin: 0 0 var(--zen-space-sm, 0.75rem) 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--callout-title-color);
+    letter-spacing: -0.01em;
+  }
+  
+  .zen-callout-body {
+    color: var(--callout-text-color);
+    line-height: 1.6;
+  }
+  
+  .zen-callout-body > *:first-child {
+    margin-top: 0;
+  }
+  
+  .zen-callout-body > *:last-child {
+    margin-bottom: 0;
+  }
+  
+  .zen-callout-body p {
+    margin-bottom: var(--zen-space-sm, 0.75rem);
+  }
+  
+  .zen-callout-body p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .zen-callout-body a {
+    color: inherit;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: all 0.2s var(--zen-ease, cubic-bezier(0.4, 0, 0.2, 1));
+  }
+  
+  .zen-callout-body a:hover {
+    text-decoration-thickness: 2px;
+  }
+  
+  /* Info variant */
+  .zen-callout[data-type="info"] {
+    --callout-bg: rgba(14, 165, 233, 0.08);
+    --callout-border-color: #0ea5e9;
+    --callout-icon-color: #0284c7;
+    --callout-title-color: #0369a1;
+    --callout-text-color: #0c4a6e;
+    --callout-shadow-color: rgba(14, 165, 233, 0.15);
+  }
+  
+  html[data-theme='dark'] .zen-callout[data-type="info"] {
+    --callout-bg: rgba(14, 165, 233, 0.12);
+    --callout-icon-color: #38bdf8;
+    --callout-title-color: #7dd3fc;
+    --callout-text-color: #bae6fd;
+  }
+  
+  /* Warning variant */
+  .zen-callout[data-type="warning"] {
+    --callout-bg: rgba(245, 158, 11, 0.08);
+    --callout-border-color: #f59e0b;
+    --callout-icon-color: #d97706;
+    --callout-title-color: #b45309;
+    --callout-text-color: #92400e;
+    --callout-shadow-color: rgba(245, 158, 11, 0.15);
+  }
+  
+  html[data-theme='dark'] .zen-callout[data-type="warning"] {
+    --callout-bg: rgba(245, 158, 11, 0.12);
+    --callout-icon-color: #fbbf24;
+    --callout-title-color: #fde047;
+    --callout-text-color: #fef3c7;
+  }
+  
+  /* Danger variant */
+  .zen-callout[data-type="danger"] {
+    --callout-bg: rgba(239, 68, 68, 0.08);
+    --callout-border-color: #ef4444;
+    --callout-icon-color: #dc2626;
+    --callout-title-color: #b91c1c;
+    --callout-text-color: #991b1b;
+    --callout-shadow-color: rgba(239, 68, 68, 0.15);
+  }
+  
+  html[data-theme='dark'] .zen-callout[data-type="danger"] {
+    --callout-bg: rgba(239, 68, 68, 0.12);
+    --callout-icon-color: #f87171;
+    --callout-title-color: #fca5a5;
+    --callout-text-color: #fecaca;
+  }
+  
+  /* Success variant */
+  .zen-callout[data-type="success"] {
+    --callout-bg: rgba(34, 197, 94, 0.08);
+    --callout-border-color: #22c55e;
+    --callout-icon-color: #16a34a;
+    --callout-title-color: #15803d;
+    --callout-text-color: #166534;
+    --callout-shadow-color: rgba(34, 197, 94, 0.15);
+  }
+  
+  html[data-theme='dark'] .zen-callout[data-type="success"] {
+    --callout-bg: rgba(34, 197, 94, 0.12);
+    --callout-icon-color: #4ade80;
+    --callout-title-color: #86efac;
+    --callout-text-color: #bbf7d0;
+  }
+  
+  /* Tip variant */
+  .zen-callout[data-type="tip"] {
+    --callout-bg: rgba(139, 92, 246, 0.08);
+    --callout-border-color: #8b5cf6;
+    --callout-icon-color: #7c3aed;
+    --callout-title-color: #6d28d9;
+    --callout-text-color: #5b21b6;
+    --callout-shadow-color: rgba(139, 92, 246, 0.15);
+  }
+  
+  html[data-theme='dark'] .zen-callout[data-type="tip"] {
+    --callout-bg: rgba(139, 92, 246, 0.12);
+    --callout-icon-color: #a78bfa;
+    --callout-title-color: #c4b5fd;
+    --callout-text-color: #e0e7ff;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .zen-callout {
+      --callout-padding: var(--zen-space, 1rem);
+      --callout-gap: var(--zen-space-sm, 0.75rem);
+      margin: var(--zen-space-lg, 1.5rem) 0;
+    }
+    
+    .zen-callout-icon {
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+    
+    .zen-callout-title {
+      font-size: 0.9375rem;
+    }
+  }
+  
+  /* Reduce motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .zen-callout,
+    .zen-callout-icon,
+    .zen-callout-body a {
+      transition: none;
+    }
+    
+    .zen-callout:hover {
+      transform: none;
+    }
+    
+    .zen-callout:hover .zen-callout-icon {
+      transform: none;
+    }
+  }
+</style>

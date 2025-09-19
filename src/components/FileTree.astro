@@ -1,0 +1,87 @@
+---
+interface Props {
+  variant?: "default" | "compact" | "detailed";
+  showLines?: boolean;
+  expandable?: boolean;
+}
+
+const { variant = "default", showLines = true, expandable = false } = Astro.props;
+---
+
+<div class:list={["zen-file-tree", variant, { "show-lines": showLines, expandable }]}>
+  <slot />
+</div>
+
+<style>
+  .zen-file-tree {
+    --tree-bg: var(--zen-bg-elevated, #f8fafc);
+    --tree-border: var(--zen-border, #e5e7eb);
+    --tree-text: var(--zen-text-main, #334155);
+    --tree-text-muted: var(--zen-text-muted, #64748b);
+    --tree-line: var(--zen-border-light, #f1f5f9);
+    --tree-radius: var(--zen-radius, 0.75rem);
+    --tree-padding: var(--zen-space-xl, 2rem);
+    --tree-gap: var(--zen-space-xs, 0.5rem);
+    --tree-indent: var(--zen-space-lg, 1.5rem);
+    --tree-font: var(--sl-font-code, 'JetBrains Mono', 'Fira Code', Consolas, monospace);
+    
+    position: relative;
+    background: var(--tree-bg);
+    border: 1px solid var(--tree-border);
+    border-radius: var(--tree-radius);
+    padding: var(--tree-padding);
+    margin: var(--zen-space-xl, 2rem) 0;
+    font-family: var(--tree-font);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    overflow: hidden;
+    box-shadow: var(--zen-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
+  }
+  
+  .zen-file-tree::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--zen-gradient-primary, linear-gradient(135deg, #0ea5e9, #38bdf8));
+    border-radius: var(--tree-radius) var(--tree-radius) 0 0;
+  }
+  
+  .zen-file-tree.compact {
+    --tree-padding: var(--zen-space-lg, 1.5rem);
+    --tree-gap: var(--zen-space-xs, 0.5rem);
+    --tree-indent: var(--zen-space, 1rem);
+  }
+  
+  .zen-file-tree.detailed {
+    --tree-padding: var(--zen-space-2xl, 3rem);
+    --tree-gap: var(--zen-space-sm, 0.75rem);
+  }
+  
+  html[data-theme='dark'] .zen-file-tree {
+    --tree-bg: var(--zen-bg-elevated, #374151);
+    --tree-border: var(--zen-border, #4b5563);
+    --tree-text: var(--zen-text-main, #f3f4f6);
+    --tree-text-muted: var(--zen-text-muted, #d1d5db);
+    --tree-line: var(--zen-border-light, #4b5563);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .zen-file-tree {
+      --tree-padding: var(--zen-space-lg, 1.5rem);
+      --tree-indent: var(--zen-space, 1rem);
+      font-size: 0.8125rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .zen-file-tree {
+      --tree-padding: var(--zen-space, 1rem);
+      --tree-indent: var(--zen-space-sm, 0.75rem);
+    }
+  }
+</style>
+
