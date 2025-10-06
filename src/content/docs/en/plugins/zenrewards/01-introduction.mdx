@@ -1,0 +1,108 @@
+---
+title: "Introducción a ZenRewards"
+description: "¡Bienvenido a ZenRewards! Descubre cómo este plugin puede transformar la lealtad de tus jugadores y potenciar la actividad en tu servidor."
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import Card from '~/components/Card.astro';
+import Steps from '~/components/Steps.astro';
+import Step from '~/components/Step.astro';
+import Accordion from '~/components/Accordion.astro';
+import FileTree from '~/components/FileTree.astro';
+import File from '~/components/File.astro';
+import FieldGroup from '~/components/FieldGroup.astro';
+import Field from '~/components/Field.astro';
+
+
+¡Bienvenidos a la wiki oficial de **ZenRewards**! Este plugin ha sido diseñado para transformar la conexión diaria de tus jugadores en una emocionante rutina llena de premios. Prepárate para una experiencia donde la lealtad y la constancia se recompensan, creando una comunidad más activa y comprometida.
+
+## Primeros Pasos
+
+Navega a las secciones clave para empezar a configurar tu servidor.
+
+<CardGrid>
+    <LinkCard title="Instalación" href="02-install" />
+    <LinkCard title="Comandos" href="05-commands" />
+    <LinkCard title="Menu" href="04-menu" />
+    <LinkCard title="Placeholders" href="07-placeholders" />
+</CardGrid>
+
+<Card title="Requisitos del Sistema" icon="server">
+    **ZenRewards** está diseñado para ser altamente compatible.
+    - **Servidor:** Spigot, Paper, Purpur o forks. Versión 1.8.8 o superior.
+    - **Dependencia Opcional:** [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) para usar las variables del plugin.
+</Card>
+
+## Guía de Inicio Rápido
+
+Sigue estos simples pasos para tener ZenRewards funcionando en minutos.
+
+<Steps>
+<Step title="Descargar el Plugin">
+Obtén la última versión del archivo `.jar` desde nuestra página de lanzamiento oficial.
+</Step>
+<Step title="Instalar en tu Servidor">
+Coloca el archivo `ZenRewards.jar` en la carpeta `plugins` de tu servidor.
+
+<Aside type="tip" title="¡Activa los Placeholders!">
+Si tienes **PlaceholderAPI** instalado (¡muy recomendado!), las variables como `%zenrewards_streak_current%` se activarán automáticamente.
+</Aside>
+</Step>
+<Step title="Reiniciar y Configurar">
+Reinicia tu servidor por completo. Se generará la carpeta `ZenRewards` con todos los archivos de configuración listos para que los personalices a tu gusto.
+</Step>
+</Steps>
+
+## Conceptos Clave del Plugin
+
+ZenRewards se basa en dos sistemas principales que trabajan juntos para fomentar la retención de jugadores.
+
+-   **Menú de Recompensas (`/rewards`):** El corazón del plugin. Un menú totalmente personalizable donde los jugadores pueden reclamar premios diarios, semanales, únicos o por rango. Los ítems son inteligentes y cambian su apariencia según su estado (disponible, en cooldown, etc.).
+
+-   **Sistema de Rachas (`/streak`):** La joya de la corona. Premia a los jugadores por su constancia al conectarse días seguidos. Este sistema es clave para crear un hábito de conexión y construir una comunidad leal.
+
+## Estructura de Archivos Generada
+
+Al iniciarse por primera vez, ZenRewards creará la siguiente estructura de carpetas y archivos.
+
+<FileTree>
+  <File name="ZenRewards" type="folder">
+    <File name="playerdata" type="folder">
+      <File name="uuid-del-jugador.yml" type="file" />
+    </File>
+    <File name="config.yml" type="file" highlighted />
+    <File name="menu.yml" type="file" />
+    <File name="rewards.yml" type="file" />
+    <File name="streak-menu.yml" type="file" />
+    <File name="streaks.yml" type="file" />
+  </File>
+</FileTree>
+
+## Placeholders Destacados
+
+Gracias a la integración con PlaceholderAPI, puedes mostrar información dinámica en cualquier parte de tu servidor.
+
+<FieldGroup variant="cards">
+  <Field 
+    name="%zenrewards_streak_current%" 
+    type="Number" 
+    description="Muestra el número de días de racha de conexión actual del jugador."
+    tags={["PAPI", "Racha"]}
+  />
+  <Field 
+    name="%zenrewards_cooldown_daily_reward%" 
+    type="String" 
+    description="Muestra el tiempo restante para la recompensa con ID 'daily_reward'. Si está disponible, muestra el texto 'Ready' (configurable)."
+    tags={["PAPI", "Cooldown", "Personalizable"]}
+  />
+</FieldGroup>
+
+## Preguntas Frecuentes
+
+<Accordion summary="¿Este plugin funciona en mi versión de Minecraft?">
+¡Sí! ZenRewards está construido para ser retrocompatible. Funciona desde la versión **1.8.8 hasta la 1.21.x** y futuras. Utilizamos la librería XSeries para manejar las diferencias de materiales y sonidos entre versiones de forma automática.
+</Accordion>
+
+<Accordion summary="¿Afecta al rendimiento del servidor (TPS)?">
+No. Las operaciones clave, como la actualización de los menús y el manejo de datos, están optimizadas. El sistema de actualización de cooldowns en tiempo real solo se activa para los jugadores que tienen el menú abierto, evitando cualquier carga innecesaria.
+</Accordion>

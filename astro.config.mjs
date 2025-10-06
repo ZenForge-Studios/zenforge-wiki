@@ -43,10 +43,16 @@ export default defineConfig({
               link: '/'
             },
             {
-              label: 'Plugin de Prueba',
+              label: 'ZenRewards',
               items: [
-                { label: 'Introducción a Test', link: '/plugins/test/01-introduction/' },
-                { label: 'Ejemplos de Componentes', link: '/plugins/test/02-component-examples/' },
+                { label: 'Introducción', link: '/plugins/zenrewards/01-introduction/' },
+                { label: 'Funciones', link: '/plugins/zenrewards/02-functions/' },
+                { label: 'Recompensas', link: '/plugins/zenrewards/03-rewards/' },
+                { label: 'Menu', link: '/plugins/zenrewards/04-menu/' },
+                { label: 'Comandos', link: '/plugins/zenrewards/05-commands/' },
+                { label: 'Permisos', link: '/plugins/zenrewards/06-permissions/' },
+                { label: 'Placeholders', link: '/plugins/zenrewards/07-placeholders/' },
+                { label: 'Acciones', link: '/plugins/zenrewards/08-actions/' },
               ]
             },
             {
@@ -69,10 +75,16 @@ export default defineConfig({
               link: '/'
             },
             {
-              label: 'Test Plugin',
+              label: 'ZenRewards',
               items: [
-                { label: 'Introduction to Test', link: '/plugins/test/01-introduction/' },
-                { label: 'Component Examples', link: '/plugins/test/02-component-examples/' },
+                { label: 'Introducción', link: '/plugins/zenrewards/01-introduction/' },
+                { label: 'Funciones', link: '/plugins/zenrewards/02-functions/' },
+                { label: 'Recompensas', link: '/plugins/zenrewards/03-rewards/' },
+                { label: 'Menu', link: '/plugins/zenrewards/04-menu/' },
+                { label: 'Comandos', link: '/plugins/zenrewards/05-commands/' },
+                { label: 'Permisos', link: '/plugins/zenrewards/06-permissions/' },
+                { label: 'Placeholders', link: '/plugins/zenrewards/07-placeholders/' },
+                { label: 'Acciones', link: '/plugins/zenrewards/08-actions/' },
               ]
             },
             {

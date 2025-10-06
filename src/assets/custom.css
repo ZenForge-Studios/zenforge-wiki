@@ -56,30 +56,36 @@
   --zen-ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-/* === TEMA OSCURO  === */
+/* === TEMA OSCURO (ZENFORGE DARK v2) === */
 html[data-theme='dark'] {
-  --zen-bg-main: #030712; /* gray-950 */
-  --zen-bg-sidebar: #0f1729; /* custom dark */
-  --zen-bg-content: #1f2937; /* gray-800 */
-  --zen-bg-elevated: #374151; /* gray-700 */
-  --zen-bg-hover: #4b5563; /* gray-600 */
-  --zen-bg-code: #111827; /* gray-900 */
-  
-  --zen-border: rgba(75, 85, 99, 0.3); /* gray-600 with opacity */
-  --zen-border-light: rgba(55, 65, 81, 0.5); /* gray-700 with opacity */
-  --zen-border-strong: #6b7280; /* gray-500 */
-  
-  --zen-text-main: #f3f4f6; /* gray-100 */
-  --zen-text-headings: #ffffff;
-  --zen-text-muted: #d1d5db; /* gray-300 */
-  --zen-text-subtle: #9ca3af; /* gray-400 */
-  --zen-text-faint: #6b7280; /* gray-500 */
-  
-  /* Estados  */
-  --zen-success: #10b981; /* emerald-500 */
-  --zen-warning: #f59e0b; /* amber-500 */
-  --zen-error: #f87171; /* red-400 */
-  --zen-info: var(--zen-primary-400);
+  /* Fondo base */
+  --zen-bg-main: #0b0d12;       /* casi negro con un toque azulado */
+  --zen-bg-sidebar: #11131a;    /* sidebar más diferenciado */
+  --zen-bg-content: #1a1d25;    /* contenido principal */
+  --zen-bg-elevated: #242832;   /* elementos elevados (cards, menús) */
+  --zen-bg-hover: #2f3542;      /* hover con contraste sutil */
+  --zen-bg-code: #0d1117;       /* estilo github dark para bloques de código */
+
+  /* Bordes */
+  --zen-border: #2a2f3a;        /* gris azulado suave */
+  --zen-border-light: #3a4150;  /* un poco más claro */
+
+  /* Texto */
+  --zen-text-main: #e5eaf5;     /* gris muy claro (casi blanco, no puro) */
+  --zen-text-headings: #ffffff; /* blanco puro para headers */
+  --zen-text-muted: #9ca3af;    /* gris neutro */
+  --zen-text-subtle: #6b7280;   /* más apagado */
+
+  /* Marca principal (azules) */
+  --zen-primary: #3b82f6;       /* azul 500 */
+  --zen-primary-light: #60a5fa; /* azul 400 */
+  --zen-primary-dark: #2563eb;  /* azul 600 */
+
+  /* Estados */
+  --zen-success: #22c55e;  /* verde 500 */
+  --zen-warning: #facc15;  /* amarillo 400 */
+  --zen-error: #ef4444;    /* rojo 500 */
+  --zen-info: #38bdf8;     /* celeste 400 */
   
   /* Overrides Starlight */
   --sl-color-accent-low: rgba(14, 165, 233, 0.1);
@@ -97,27 +103,27 @@ html[data-theme='dark'] {
 
 /* === TEMA CLARO  === */
 html[data-theme='light'] {
-  --zen-bg-main: #fdfdfe; /* Almost white */
+  --zen-bg-main: #fdfdfe;
   --zen-bg-sidebar: #ffffff;
   --zen-bg-content: #ffffff;
-  --zen-bg-elevated: #f8fafc; /* slate-50 */
-  --zen-bg-hover: #f1f5f9; /* slate-100 */
-  --zen-bg-code: #f8fafc; /* slate-50 */
+  --zen-bg-elevated: #f8fafc;
+  --zen-bg-hover: #f1f5f9; 
+  --zen-bg-code: #f8fafc; 
   
-  --zen-border: rgba(226, 232, 240, 0.8); /* slate-200 with opacity */
-  --zen-border-light: rgba(241, 245, 249, 0.8); /* slate-100 with opacity */
-  --zen-border-strong: #cbd5e1; /* slate-300 */
+  --zen-border: rgba(226, 232, 240, 0.8); 
+  --zen-border-light: rgba(241, 245, 249, 0.8); 
+  --zen-border-strong: #cbd5e1;
   
-  --zen-text-main: #334155; /* slate-700 */
-  --zen-text-headings: #0f172a; /* slate-900 */
-  --zen-text-muted: #64748b; /* slate-500 */
-  --zen-text-subtle: #94a3b8; /* slate-400 */
-  --zen-text-faint: #cbd5e1; /* slate-300 */
+  --zen-text-main: #334155; 
+  --zen-text-headings: #0f172a; 
+  --zen-text-muted: #64748b; 
+  --zen-text-subtle: #94a3b8;
+  --zen-text-faint: #cbd5e1; 
   
   /* Estados  */
-  --zen-success: #059669; /* emerald-600 */
-  --zen-warning: #d97706; /* amber-600 */
-  --zen-error: #dc2626; /* red-600 */
+  --zen-success: #059669;
+  --zen-warning: #d97706; 
+  --zen-error: #dc2626;
   --zen-info: var(--zen-primary-600);
   
   /* Overrides Starlight */
