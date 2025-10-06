@@ -1,6 +1,56 @@
 ---
-title: Bienvenido a la Wiki de ZenForge
-description: La documentación central para todos los plugins de ZenForge.
+# Configuración de la Página de Inicio (Splash)
+title: "Bienvenido a la Wiki de ZenForge"
+description: "La documentación central para todos los plugins de ZenForge Studios. Encuentra guías, configuraciones y tutoriales."
+template: splash
+
+# Contenido de la sección "Hero" (la parte superior)
+hero:
+  tagline: Forjando plugins de alta calidad para tu servidor de Minecraft.
+  # Asegúrate de que la ruta a tu logo sea correcta
+  image:
+    alt: Logo de ZenForge Studios
+    file: src/assets/logo.svg
+  actions:
+    - text: Explorar Plugins
+      link: /es/plugins/zenrewards/01-introduction/
+      icon: right-arrow
+      variant: primary
+    - text: Unirse a Discord
+      # ¡IMPORTANTE! Reemplaza este enlace con la invitación a tu Discord
+      link: https://discord.gg/ThVDHfvqxH
+      icon: external
 ---
 
-¡Bienvenido! Usa la barra de navegación de la izquierda para explorar la documentación de nuestros plugins.
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Nuestros Plugins
+
+Aquí encontrarás la documentación detallada para cada una de nuestras herramientas.
+
+<CardGrid>
+	<LinkCard
+		title="ZenRewards"
+		description="Un potente sistema de recompensas diarias, semanales y por rachas de conexión para fidelizar a tus jugadores."
+		href="/es/plugins/zenrewards/01-introduction/"
+	/>
+	<LinkCard
+		title="Próximo Plugin (¡Pronto!)"
+		description="Estamos forjando nuestra próxima gran herramienta para servidores. ¡Mantente atento para más noticias!"
+		href="#"
+	/>
+</CardGrid>
+
+## Nuestra Filosofía
+
+En ZenForge, creemos en crear plugins que sean potentes y fáciles de usar.
+
+-   ⚡ **Rendimiento Primero:** Plugins optimizados para no afectar el TPS de tu servidor.
+-   📚 **Documentación Clara:** Guías completas (¡como esta!) para que no te pierdas en la configuración.
+-   💬 **Soporte Activo:** Una comunidad en Discord lista para ayudarte con cualquier duda o problema.
+
+## ¿Necesitas Ayuda?
+
+Nuestro servidor de Discord es el mejor lugar para obtener soporte rápido, compartir tus ideas y conectar con otros administradores de servidores.
+
+➡️ **[Únete a la Comunidad de ZenForge en Discord](https://discord.gg/ThVDHfvqxH)**
